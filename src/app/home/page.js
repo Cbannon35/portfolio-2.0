@@ -9,20 +9,34 @@ import Projects from "./content/projects";
 import Teaching from "./content/teaching";
 import Contact from "./content/contact";
 
+import { resetURL, joinAndSetURL } from "../utils/browser-url";
+
 const sections = ['About', 'Experience', 'Projects', 'Teaching', 'Contact'];
 
 export default function HomePage() {
 
+    /* Set url on scroll */
     useEffect(() => {
         const handleScroll = () => {
-            for (let i = 0; i < sections.length; i++) {
+
+            const scrollTop = window.scrollY;
+            let flag = false;
+
+            for (let i = sections.length - 1; i >= 0; i--) {
+
                 const section = document.getElementById(sections[i]);
                 if (!section) return;
-                const scrollTop = window.scrollY;
                 const sectionTop = section.offsetTop;
+
                 if (scrollTop >= sectionTop) {
-                    window.history.replaceState({}, '', `#${sections[i]}`);
+                    joinAndSetURL(`#${sections[i]}`)
+                    flag = true;
+                    break;
                 }
+            }
+        
+            if (!flag) {
+                resetURL(window.location.pathname);
             }
         };
         window.addEventListener('scroll', handleScroll);

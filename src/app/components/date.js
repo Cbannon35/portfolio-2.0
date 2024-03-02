@@ -32,9 +32,11 @@ function calculateTime(date) {
 }
 
 const DateTime = () => {
-    var [date, setDate] = useState(new Date());
+    const [test, setTest] = useState(false);
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
+        setTest(true);
         var timerID = setInterval(() => tick(), 1000);
         return function cleanup() {
             clearInterval(timerID);
@@ -43,6 +45,11 @@ const DateTime = () => {
 
     function tick() {
         setDate(new Date());
+    }
+
+    /* Seems to fix mismatch between server and client rendering... delay is good? */
+    if (!test) {
+        return <div>Loading...</div>;
     }
 
     return (

@@ -10,7 +10,6 @@ export default function HomePage() {
     const [prevSection, setPrevSection] = useState('');
     const [prevSubSection, setPrevSubSection] = useState('');
    
-    console.log("helloooo");
     /* Set url on scroll */
     useEffect(() => {
         const handleScroll = () => {
@@ -42,7 +41,7 @@ export default function HomePage() {
             if (activeSection !== prevSection || activeSubSection !== prevSubSection) {
                 setPrevSection(activeSection);
                 setPrevSubSection(activeSubSection);
-                const url = activeSubSection ? `#/${activeSection}/${activeSubSection}` : `#/${activeSection}`;
+                const url = activeSubSection ? `#${activeSection}/${activeSubSection}` : `#${activeSection}`;
                 joinAndSetURL(url);
             } else if (!activeSection && (prevSection || prevSubSection)) {
                 setPrevSection('');

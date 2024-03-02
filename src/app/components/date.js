@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /**
  * Takes in the date object and returns the date in mm/dd/yyyy format
@@ -39,14 +39,14 @@ const DateTime = () => {
         return function cleanup() {
             clearInterval(timerID);
         };
-    });
+    }, []);
 
     function tick() {
         setDate(new Date());
     }
 
     return (
-        <div id="DateTime" class="flex-col">
+        <div id="DateTime" className="flex-col">
             {calculateDate(date)}
             <br />
             {calculateTime(date)}

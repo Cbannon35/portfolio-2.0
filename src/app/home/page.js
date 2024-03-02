@@ -1,68 +1,72 @@
 "use client"
 
-import Link from "next/link";
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import About from './content/about';
-import Experience from "./content/experience";
-import Projects from "./content/projects";
-import Teaching from "./content/teaching";
-import Contact from "./content/contact";
+import { useEffect, useState } from 'react';
+import { sections } from "./sections";
+import { joinAndSetURL, resetURL } from "@/app/utils/browser-url";
 
-import { resetURL, joinAndSetURL } from "../utils/browser-url";
-
-const sections = ['About', 'Experience', 'Projects', 'Teaching', 'Contact'];
+const reversedSections = Object.keys(sections).reverse();
 
 export default function HomePage() {
-
+    const [prevSection, setPrevSection] = useState('');
+    const [prevSubSection, setPrevSubSection] = useState('');
+   
+    console.log("helloooo");
     /* Set url on scroll */
     useEffect(() => {
         const handleScroll = () => {
-
             const scrollTop = window.scrollY;
-            let flag = false;
+            let activeSection = '';
+            let activeSubSection = '';
 
-            for (let i = sections.length - 1; i >= 0; i--) {
-
-                const section = document.getElementById(sections[i]);
-                if (!section) return;
-                const sectionTop = section.offsetTop;
+            for (const section of reversedSections) {
+                const sectionElem = document.getElementById(section);
+                if (!sectionElem) continue;
+                const sectionTop = sectionElem.offsetTop;
 
                 if (scrollTop >= sectionTop) {
-                    joinAndSetURL(`#${sections[i]}`)
-                    flag = true;
+                    activeSection = section;
+
+                    const subSections = sections[section].subsections;
+                    for (const subSection of subSections) {
+                        const subSectionElem = document.getElementById(section + '/' + subSection);
+                        if (!subSectionElem) continue;
+                        const subSectionTop = subSectionElem.offsetTop;
+
+                        if (scrollTop >= subSectionTop) activeSubSection = subSection;
+                        else break;
+                    }
                     break;
                 }
             }
-        
-            if (!flag) {
+
+            if (activeSection !== prevSection || activeSubSection !== prevSubSection) {
+                setPrevSection(activeSection);
+                setPrevSubSection(activeSubSection);
+                const url = activeSubSection ? `#/${activeSection}/${activeSubSection}` : `#/${activeSection}`;
+                joinAndSetURL(url);
+            } else if (!activeSection && (prevSection || prevSubSection)) {
+                setPrevSection('');
+                setPrevSubSection('');
                 resetURL(window.location.pathname);
             }
         };
-        window.addEventListener('scroll', handleScroll);
 
+        window.addEventListener('scroll', handleScroll);
         return () => {
-        window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [prevSection, prevSubSection]);
 
   return (
     <>
-        <div id="About">
-            <About />
-        </div>
-        <div id="Experience">
-            <Experience />
-        </div>
-        <div id="Projects">
-            <Projects />
-        </div>
-        <div id="Teaching">
-            <Teaching />
-        </div>
-        <div id="Contact">
-            <Contact />
-        </div>
+        {Object.keys(sections).map((section, index) => {
+            const Section = sections[section].component;
+            return (
+                <div key={index} id={`${section}`}>
+                    <Section prefix={section} />
+                </div>
+            );
+        })}
     </>
   );
 }

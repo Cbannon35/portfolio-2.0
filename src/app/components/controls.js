@@ -1,7 +1,9 @@
 "use client"
 import React, { useState, useEffect } from "react";
+import { UpArrow, RightArrow, LeftArrow, DownArrow } from "@/app/utils/symbols";
 import Key from "./key"
-const Controls = () => {
+
+const Controls = (props) => {
     const [mouseUp, setMouseUp] = useState(false);
     const [keyPressed, setKeyPressed] = useState('');
 
@@ -18,6 +20,7 @@ const Controls = () => {
 
     useEffect(() => {
         const handleKeyDown = (e) => {
+            console.log(e.key)
             setKeyPressed(e.key);
         };
         document.addEventListener('keydown', handleKeyDown);
@@ -39,8 +42,19 @@ const Controls = () => {
     }, []);
 
     return (
-        <div className="">
-            Test Key <Key char={keyPressed} keyToListen={'a'} mouseUp={mouseUp} setMouseUp={setMouseUp}>A</Key>
+        <div className="flex flex-row">
+            <div className="">
+                Test Key <Key char={keyPressed} keyToListen={'a'} mouseUp={mouseUp} setMouseUp={setMouseUp}>A</Key>
+            </div>
+            <div className="">
+                Navigate
+                <Key char={keyPressed} keyToListen={'ArrowLeft'} mouseUp={mouseUp} setMouseUp={setMouseUp}>{LeftArrow}</Key>
+                <Key char={keyPressed} keyToListen={'ArrowRight'} mouseUp={mouseUp} setMouseUp={setMouseUp}>{RightArrow}</Key>
+            </div>
+            <div className="">
+                <Key char={keyPressed} keyToListen={'ArrowUp'} mouseUp={mouseUp} setMouseUp={setMouseUp}>{UpArrow}</Key>
+                <Key char={keyPressed} keyToListen={'ArrowDown'} mouseUp={mouseUp} setMouseUp={setMouseUp}>{DownArrow}</Key>
+            </div>
         </div>
     )
 }

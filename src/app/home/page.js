@@ -8,8 +8,11 @@ const reversedSections = Object.keys(sections).reverse();
 
 export default function HomePage() {
     const [prevSection, setPrevSection] = useState('');
+    const [sectionPointer, setSectionPointer] = useState(0);
     const [prevSubSection, setPrevSubSection] = useState('');
-   
+    const [subSectionPointer, setSubSectionPointer] = useState(0);
+
+
     /* Set url on scroll */
     useEffect(() => {
         const handleScroll = () => {
@@ -56,16 +59,16 @@ export default function HomePage() {
         };
     }, [prevSection, prevSubSection]);
 
-  return (
-    <>
-        {Object.keys(sections).map((section, index) => {
-            const Section = sections[section].component;
-            return (
-                <div key={index} id={`${section}`}>
-                    <Section prefix={section} />
-                </div>
-            );
-        })}
-    </>
-  );
+    return (
+        <>
+            {Object.keys(sections).map((section, index) => {
+                const Section = sections[section].component;
+                return (
+                    <div key={index} id={`${section}`}>
+                        <Section prefix={section} />
+                    </div>
+                );
+            })}
+        </>
+    );
 }

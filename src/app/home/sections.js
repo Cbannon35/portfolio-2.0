@@ -11,7 +11,6 @@ import Contact from "./content/contact";
  * @property {string[]} subsections - The subsections of the section.
  */
 
-
 /**
  * The sections of the home page.
  * @type {Object}

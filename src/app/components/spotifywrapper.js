@@ -9,6 +9,13 @@ const displayCurrentSong = (song) => {
             </div>
         )
     }
+    if (song.songType === "ad") {
+        return (
+            <div>
+                <p>An ad got to me :'(</p>
+            </div>
+        );
+    }
     return (
         <div>
             <p>Listening To{" "}</p>
@@ -20,13 +27,6 @@ const displayCurrentSong = (song) => {
 }
 
 const SongBox = ({song, loading, displaySong}) => {
-    if (song.songType === "ad") {
-        return (
-            <div>
-                <p>An ad got to me :'(</p>
-            </div>
-        );
-    }
     if (loading) {
         return (
             <div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
+const linkArrow = String.fromCharCode(8599);
 
 const displayCurrentSong = (song) => {
     if (!song.isPlaying) {
@@ -23,8 +24,15 @@ const displayCurrentSong = (song) => {
         <div>
             <p>Listening To{" "}</p>
             <a href={song.songUrl} target="_blank">
-                {song.title}
+                {song.title} {linkArrow}
             </a>
+            by {song.artist}
+            <img
+                width="64px"
+                height="64px"
+                src={song.albumImageUrl}
+                alt={`${sonng.title} album art`}
+            />
         </div>
     );
 }

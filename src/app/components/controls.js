@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import Key from "./key"
 const Controls = () => {
     const [mouseUp, setMouseUp] = useState(false);
-
-    function test() {
-        console.log("testing")
-    }
+    const [keyPressed, setKeyPressed] = useState('');
 
     useEffect(() => {
         const handleMouseUp = () => {
@@ -19,9 +16,31 @@ const Controls = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            setKeyPressed(e.key);
+        };
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleKeyUp = (e) => {
+            setKeyPressed('');
+        };
+        document.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
+
     return (
         <div className="">
-            Test Key <Key char="A" fn={test} mouseUp={mouseUp} setMouseUp={setMouseUp} />
+            Test Key <Key char={keyPressed} keyToListen={'a'} mouseUp={mouseUp} setMouseUp={setMouseUp}>A</Key>
         </div>
     )
 }

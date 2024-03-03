@@ -1,5 +1,8 @@
 "use client"
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import useSWR from "swr";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const displayCurrentSong = (song) => {
     if (!song.isPlaying) {
@@ -20,13 +23,13 @@ const displayCurrentSong = (song) => {
         <div>
             <p>Listening To{" "}</p>
             <a href={song.songUrl} target="_blank">
-               {song.title}
-             </a>
+                {song.title}
+            </a>
         </div>
     );
 }
 
-const SongBox = ({song, loading, displaySong}) => {
+const SongBox = ({ song, loading, displaySong }) => {
     if (loading) {
         return (
             <div>
@@ -42,41 +45,30 @@ const SongBox = ({song, loading, displaySong}) => {
 
 const SpotifyWrapper = (props) => {
     const [displaySong, setDisplaySong] = useState(false);
-    const [song, setSong] = useState({});
     const [loading, setLoading] = useState(false);
-
-    const fetchSong = async () => {
-        try {
-            const response = await fetch('/api/now-playing');
-            const song = await response.json();
-            setSong(song);
-        } catch (e) {
-            console.error(e);
-            setSong({isPlaying: false});
-        }
-    };
+    const { data, error, mutate, isLoading } = useSWR('/api/now-playing', fetcher);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (displaySong) fetchSong();
+            if (displaySong) mutate();
         }, 30 * 1000);
 
         return () => clearInterval(interval);
-  }, [displaySong]);
+    }, [displaySong]);
 
     return (
         <div className="p-4 border-white border-2">
             <button onClick={
                 async () => {
                     setLoading(true);
-                    if (!displaySong) await fetchSong();
+                    if (!displaySong) await mutate();
                     setDisplaySong(!displaySong)
                     setLoading(false);
                 }}
-                >
-                    Toggle
+            >
+                Toggle
             </button>
-            <SongBox song={song} loading={loading} displaySong={displaySong} />
+            {!error ? <SongBox song={data} loading={loading} displaySong={displaySong} /> : <div>An error occured</div>}
         </div>
     )
 }

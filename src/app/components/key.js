@@ -26,7 +26,7 @@ export default function Key({ children, char, keyToListen, fn, mouseUp, setMouse
     useEffect(() => {
         if (char === keyToListen) {
             setPressed(true);
-            // fn();
+            fn();
             return;
         }
         setPressed(false);
@@ -35,6 +35,7 @@ export default function Key({ children, char, keyToListen, fn, mouseUp, setMouse
     return (
         <div className={`inline border-white border-b-[0.125rem] border-x-[0.0625rem] leading-[.85] cursor-pointer select-none ${pressed ? keyPressedClasses : keyClasses}`}
             onMouseDown={() => { setPressed(true); setMouseUp(false) }}
+            onClick={fn}
         >
             {children}
         </div>

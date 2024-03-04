@@ -23,22 +23,22 @@ import Contact from "./content/contact";
 export const sections = {
     'About': {
         component: About,
-        subsections: [] 
+        subsections: ['']
     },
     'Experience': {
         component: Experience,
-        subsections: ["HEL Researcher", "CS160 TA", "SWE Intern"] 
+        subsections: ["HEL Researcher", "CS160 TA", "SWE Intern"]
     },
     'Projects': {
         component: Projects,
-        subsections: []
+        subsections: ['']
     },
     'Teaching': {
         component: Teaching,
-        subsections: []
+        subsections: ['']
     },
     'Contact': {
         component: Contact,
-        subsections: []
+        subsections: ['']
     }
 };

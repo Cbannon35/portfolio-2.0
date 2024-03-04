@@ -20,7 +20,7 @@ const NavBar = ({ pointer, scrolling }) => {
 
     return (
         <nav>
-            <ul className='flex flex-row gap-2'>
+            <ul className='flex flex-row gap-2 fixed'>
                 <li><TextBlock text='Home' active={pointer === -1} /></li>
                 {Object.keys(sections).map((section, index) => {
                     return (

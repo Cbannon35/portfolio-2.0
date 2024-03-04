@@ -30,8 +30,11 @@ export default function HomePage() {
         }
     }
     function incrementSubSectionPointer() {
-        if (sectionPointer === -1) return;
-        // check if subsections exists or is not empty
+        if (sectionPointer === -1) {
+            incrementSectionPointer();
+            return;
+        }
+        console.log(sections[sectionsArray[sectionPointer]])
         if (subSectionPointer < sections[sectionsArray[sectionPointer]].subsections.length - 1) {
             setSubSectionPointer(subSectionPointer + 1);
         } else {
@@ -42,7 +45,14 @@ export default function HomePage() {
         if (subSectionPointer > 0) {
             setSubSectionPointer(subSectionPointer - 1);
         } else {
-            decrementSectionPointer();
+            if (sectionPointer === -1) return;
+            if (sectionPointer === 0) {
+                setSectionPointer(-1);
+                setSubSectionPointer(0);
+            } else {
+                decrementSectionPointer();
+                setSubSectionPointer(sections[sectionsArray[sectionPointer - 1]].subsections.length - 1);
+            }
         }
     }
 

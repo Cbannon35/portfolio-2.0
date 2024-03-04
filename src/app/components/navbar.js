@@ -4,9 +4,11 @@ import TextBlock from './textblock';
 
 import { sections } from '../home/sections';
 
-const NavBar = ({ pointer }) => {
+const NavBar = ({ pointer, scrolling }) => {
 
     useEffect(() => {
+        if (scrolling) return;
+
         if (pointer === -1) {
             window.scrollTo({ top: 0 });
             return;

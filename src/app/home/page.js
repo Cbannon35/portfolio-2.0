@@ -14,6 +14,7 @@ export default function HomePage() {
     const [sectionPointer, setSectionPointer] = useState(0);
     const [prevSubSection, setPrevSubSection] = useState('');
     const [subSectionPointer, setSubSectionPointer] = useState(0);
+    const [scrolling, setScrolling] = useState(false); // used to prevent keyboard navigation while scrolling
 
     function incrementSectionPointer() {
         if (sectionPointer < sectionsArray.length - 1) {
@@ -49,6 +50,7 @@ export default function HomePage() {
     /* Set url on scroll */
     useEffect(() => {
         const handleScroll = () => {
+            setScrolling(true);
             const scrollTop = window.scrollY;
             let activeSection = '';
             let activeSubSection = '';
@@ -77,11 +79,14 @@ export default function HomePage() {
             if (activeSection !== prevSection || activeSubSection !== prevSubSection) {
                 setPrevSection(activeSection);
                 setPrevSubSection(activeSubSection);
+                setSectionPointer(sectionsArray.indexOf(activeSection));
                 const url = activeSubSection ? `#${activeSection}/${activeSubSection}` : `#${activeSection}`;
                 joinAndSetURL(url);
             } else if (!activeSection && (prevSection || prevSubSection)) {
                 setPrevSection('');
                 setPrevSubSection('');
+                setSectionPointer(-1);
+                setSubSectionPointer(0);
                 resetURL(window.location.pathname);
             }
         };
@@ -94,7 +99,7 @@ export default function HomePage() {
 
     return (
         <>
-            <Navbar pointer={sectionPointer} />
+            <Navbar pointer={sectionPointer} scrolling={true} />
             {Object.keys(sections).map((section, index) => {
                 const Section = sections[section].component;
                 return (
@@ -107,7 +112,8 @@ export default function HomePage() {
                 incrementSectionPointer,
                 decrementSectionPointer,
                 incrementSubSectionPointer,
-                decrementSubSectionPointer
+                decrementSubSectionPointer,
+                setScrolling
             }} />
         </>
     );

@@ -8,11 +8,11 @@ const keys = ["a", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
 
 /**
  * Controls component.
- * @param {{incrementSectionPointer: function, decrementSectionPointer: function, incrementSubSectionPointer: function, decrementSubSectionPointer: function}} props - The component props.
+ * @param {{incrementSectionPointer: function, decrementSectionPointer: function, incrementSubSectionPointer: function, decrementSubSectionPointer: function, setScrolling: function}} props - The component props.
  * @returns {JSX.Element} - The Controls component.
  */
 const Controls = (props) => {
-    const { incrementSectionPointer, decrementSectionPointer, incrementSubSectionPointer, decrementSubSectionPointer } = props;
+    const { incrementSectionPointer, decrementSectionPointer, incrementSubSectionPointer, decrementSubSectionPointer, setScrolling } = props;
     const [mouseUp, setMouseUp] = useState(false);
     const [keyPressed, setKeyPressed] = useState('');
 
@@ -31,6 +31,7 @@ const Controls = (props) => {
         const handleKeyDown = (e) => {
             if (keys.includes(e.key)) e.preventDefault();
             setKeyPressed(e.key);
+            setScrolling(false);
         };
         document.addEventListener('keydown', handleKeyDown);
 
@@ -42,6 +43,7 @@ const Controls = (props) => {
     useEffect(() => {
         const handleKeyUp = (e) => {
             setKeyPressed('');
+            setScrolling(false);
         };
         document.addEventListener('keyup', handleKeyUp);
 

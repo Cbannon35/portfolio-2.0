@@ -11,10 +11,10 @@ const reversedSections = Object.keys(sections).reverse();
 
 export default function HomePage() {
     const [prevSection, setPrevSection] = useState('');
-    const [sectionPointer, setSectionPointer] = useState(0);
+    const [sectionPointer, setSectionPointer] = useState(-1);
     const [prevSubSection, setPrevSubSection] = useState('');
     const [subSectionPointer, setSubSectionPointer] = useState(0);
-    const [scrolling, setScrolling] = useState(false); // used to prevent keyboard navigation while scrolling
+    const [scrolling, setScrolling] = useState(true); // used to prevent keyboard navigation while scrolling
 
     function incrementSectionPointer() {
         if (sectionPointer < sectionsArray.length - 1) {
@@ -99,7 +99,7 @@ export default function HomePage() {
 
     return (
         <>
-            <Navbar pointer={sectionPointer} scrolling={true} />
+            <Navbar pointer={sectionPointer} scrolling={scrolling} />
             {Object.keys(sections).map((section, index) => {
                 const Section = sections[section].component;
                 return (
